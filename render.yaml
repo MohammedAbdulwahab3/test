@@ -1,20 +1,17 @@
 services:
-  # PostgreSQL Database (Free tier for 90 days)
+  # PostgreSQL Database (Free tier)
   - type: pserv
     name: flutter-backend-db
     plan: free
-    region: oregon
     databases:
       - name: flutter_db
         user: flutter_user
-    ipAllowList: []
 
   # Web Service - Go Backend
   - type: web
     name: flutter-backend
     env: docker
     plan: free
-    region: oregon
     dockerfilePath: ./Dockerfile
     dockerContext: .
     healthCheckPath: /healthz
