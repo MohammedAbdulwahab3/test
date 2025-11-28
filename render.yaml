@@ -41,4 +41,4 @@ services:
       - key: PROMETHEUS_API_KEY
         sync: false
       - key: SCRAPE_TARGET
-        value: https://flutter-backend-ac58.onrender.com/metrics
+        value: flutter-backend-ac58.onrender.com:443

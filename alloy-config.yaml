@@ -2,6 +2,7 @@ prometheus.scrape "backend" {
   targets = [{
     __address__ = env("SCRAPE_TARGET"),
   }]
+  scheme = "https"
   metrics_path = "/metrics"
   forward_to = [prometheus.remote_write.grafana_cloud.receiver]
   scrape_interval = "15s"
