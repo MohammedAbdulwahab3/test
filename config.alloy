@@ -1,0 +1,18 @@
+prometheus.scrape "backend" {
+  targets = [{
+    __address__ = "localhost:8080",
+  }]
+  metrics_path = "/metrics"
+  forward_to = [prometheus.remote_write.grafana_cloud.receiver]
+  scrape_interval = "15s"
+}
+
+prometheus.remote_write "grafana_cloud" {
+  endpoint {
+    url = env("PROMETHEUS_URL")
+    basic_auth {
+      username = env("PROMETHEUS_USER")
+      password = env("PROMETHEUS_API_KEY")
+    }
+  }
+}
