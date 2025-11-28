@@ -2,7 +2,6 @@ services:
   # PostgreSQL Database (Free tier for 90 days)
   - type: pserv
     name: flutter-backend-db
-    env: docker
     plan: free
     region: oregon
     databases:
