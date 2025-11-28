@@ -92,59 +92,21 @@ curl https://YOUR-APP.onrender.com/api/items
 5. Note the **Remote Write Endpoint**: `https://prometheus-XXXX.grafana.net/api/prom/push`
 6. Generate an API key if you don't have one
 
-### Step 3: Configure Prometheus Agent (Simple Option)
+### Step 3: Configure Environment Variables in Render
 
-Since we're using Render free tier, the easiest approach is to use **Grafana Agent** or **Grafana Alloy**:
+Since we've embedded Grafana Alloy into the Docker container, you just need to set the environment variables in Render:
 
-1. **Add Grafana Alloy to render.yaml**:
+1. Go to your **Render Dashboard** -> **flutter-backend** -> **Environment**
+2. Add the following variables (get values from Grafana Cloud "Details & API Keys"):
 
-```yaml
-# Add this to render.yaml
-- type: web
-  name: grafana-alloy
-  env: docker
-  plan: free
-  dockerfilePath: ./Dockerfile.alloy
-  envVars:
-    - key: PROMETHEUS_URL
-      value: https://prometheus-XXXX.grafana.net/api/prom/push
-    - key: PROMETHEUS_USER
-      value: YOUR_INSTANCE_ID
-    - key: PROMETHEUS_API_KEY
-      value: YOUR_API_KEY
-    - key: SCRAPE_TARGET
-      value: https://flutter-backend-XXXX.onrender.com/metrics
-```
+| Key | Value |
+|-----|-------|
+| `PROMETHEUS_URL` | `https://prometheus-prod-xx-xx.grafana.net/api/prom/push` |
+| `PROMETHEUS_USER` | Your Instance ID (e.g., `123456`) |
+| `PROMETHEUS_API_KEY` | Your API Key / Access Policy Token |
 
-2. **Create Dockerfile.alloy**:
+3. **Save Changes**. Render will redeploy automatically.
 
-```dockerfile
-FROM grafana/alloy:latest
-COPY alloy-config.yaml /etc/alloy/config.yaml
-CMD ["run", "--server.http.listen-addr=0.0.0.0:12345", "/etc/alloy/config.yaml"]
-```
-
-3. **Create alloy-config.yaml**:
-
-```yaml
-prometheus.scrape "backend" {
-  targets = [{
-    __address__ = env("SCRAPE_TARGET"),
-  }]
-  forward_to = [prometheus.remote_write.grafana_cloud.receiver]
-  scrape_interval = "15s"
-}
-
-prometheus.remote_write "grafana_cloud" {
-  endpoint {
-    url = env("PROMETHEUS_URL")
-    basic_auth {
-      username = env("PROMETHEUS_USER")
-      password = env("PROMETHEUS_API_KEY")
-    }
-  }
-}
-```
 
 ### Alternative: Manual Metrics Forwarding
 

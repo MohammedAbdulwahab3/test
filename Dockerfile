@@ -36,19 +36,6 @@ RUN addgroup -g 1000 appuser && \
 COPY --from=builder /build/server .
 COPY --from=builder /build/.env.example .env.example
 
-# Install Grafana Alloy (for metrics pushing)
-RUN apk add --no-cache curl unzip && \
-    curl -L -o alloy.zip "https://github.com/grafana/alloy/releases/download/v1.0.0/alloy-linux-amd64.zip" && \
-    unzip alloy.zip && \
-    mv alloy-linux-amd64 /usr/bin/alloy && \
-    chmod +x /usr/bin/alloy && \
-    rm alloy.zip
-
-# Copy Alloy config and start script
-COPY config.alloy /etc/alloy/config.alloy
-COPY start.sh /app/start.sh
-RUN chmod +x /app/start.sh
-
 # Switch to non-root user
 USER appuser
 
@@ -59,5 +46,5 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:8080/healthz || exit 1
 
-# Run the application via start script
-CMD ["./start.sh"]
+# Run the application
+CMD ["./server"]

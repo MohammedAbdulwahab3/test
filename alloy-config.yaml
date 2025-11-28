@@ -1,6 +1,6 @@
 prometheus.scrape "backend" {
   targets = [{
-    __address__ = "localhost:8080",
+    __address__ = env("SCRAPE_TARGET"),
   }]
   metrics_path = "/metrics"
   forward_to = [prometheus.remote_write.grafana_cloud.receiver]
