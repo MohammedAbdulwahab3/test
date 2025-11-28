@@ -94,9 +94,9 @@ curl https://YOUR-APP.onrender.com/api/items
 
 ### Step 3: Configure Environment Variables in Render
 
-Since we've embedded Grafana Alloy into the Docker container, you just need to set the environment variables in Render:
+We have added a separate `grafana-alloy` service to your `render.yaml`. You need to set the environment variables for this service in Render:
 
-1. Go to your **Render Dashboard** -> **flutter-backend** -> **Environment**
+1. Go to your **Render Dashboard** -> **grafana-alloy** -> **Environment**
 2. Add the following variables (get values from Grafana Cloud "Details & API Keys"):
 
 | Key | Value |
@@ -105,7 +105,7 @@ Since we've embedded Grafana Alloy into the Docker container, you just need to s
 | `PROMETHEUS_USER` | Your Instance ID (e.g., `123456`) |
 | `PROMETHEUS_API_KEY` | Your API Key / Access Policy Token |
 
-3. **Save Changes**. Render will redeploy automatically.
+3. **Save Changes**. Render will redeploy the Alloy service automatically.
 
 
 ### Alternative: Manual Metrics Forwarding
