@@ -1,8 +1,9 @@
-services:
-  # PostgreSQL Database (Free tier)
-  - type: pserv
-    name: flutter-backend-db
+databases:
+  - name: flutter-backend-db
     plan: free
+    user: flutter_user
+
+services:
 
   # Web Service - Go Backend
   - type: web
