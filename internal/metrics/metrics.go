@@ -1,6 +1,7 @@
 package metrics
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -74,7 +75,7 @@ func MetricsMiddleware() fiber.Handler {
 			path = c.Path()
 		}
 
-		httpRequestsTotal.WithLabelValues(method, path, string(rune(status/100))+"xx").Inc()
+		httpRequestsTotal.WithLabelValues(method, path, strconv.Itoa(status/100)+"xx").Inc()
 		httpRequestDuration.WithLabelValues(method, path).Observe(duration)
 
 		return err
