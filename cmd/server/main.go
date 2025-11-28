@@ -15,6 +15,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
+	"flutter_go_crud/backend/internal/cache"
 	"flutter_go_crud/backend/internal/config"
 	"flutter_go_crud/backend/internal/database"
 	"flutter_go_crud/backend/internal/metrics"
@@ -32,6 +33,13 @@ func main() {
 
 	if err := database.AutoMigrate(db); err != nil {
 		log.Fatalf("failed to migrate database: %v", err)
+	}
+
+	// Initialize Redis Cache
+	if err := cache.Init(cfg.RedisURL); err != nil {
+		log.Printf("⚠️ Redis connection failed: %v", err)
+	} else {
+		log.Println("✅ Redis connected successfully")
 	}
 
 	app := fiber.New(fiber.Config{

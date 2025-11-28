@@ -24,6 +24,11 @@ services:
         fromDatabase:
           name: flutter-backend-db
           property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: flutter-backend-redis
+          property: connectionString
       - key: CORS_ORIGINS
         value: "*"
 
@@ -42,3 +47,10 @@ services:
         sync: false
       - key: SCRAPE_TARGET
         value: flutter-backend-ac58.onrender.com:443
+
+  # Redis Cache
+  - type: redis
+    name: flutter-backend-redis
+    region: frankfurt
+    plan: free
+    ipAllowList: [] # Allow internal connections only

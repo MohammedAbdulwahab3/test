@@ -11,6 +11,7 @@ type Config struct {
 	Port        string
 	DBDriver    string // sqlite or postgres
 	DBDSN       string
+	RedisURL    string
 	AutoMigrate bool
 }
 
@@ -37,11 +38,13 @@ func Load() Config {
 	}
 
 	autoMigrate, _ := strconv.ParseBool(getenv("AUTO_MIGRATE", "true"))
+	redisURL := getenv("REDIS_URL", "redis://localhost:6379")
 
 	return Config{
 		Port:        port,
 		DBDriver:    driver,
 		DBDSN:       dsn,
+		RedisURL:    redisURL,
 		AutoMigrate: autoMigrate,
 	}
 }
