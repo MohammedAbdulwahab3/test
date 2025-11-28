@@ -1,6 +1,7 @@
 prometheus.scrape "backend" {
   targets = [{
     __address__ = env("SCRAPE_TARGET"),
+    job = "backend",
   }]
   scheme = "https"
   metrics_path = "/metrics"
