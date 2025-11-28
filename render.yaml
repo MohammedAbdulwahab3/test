@@ -3,9 +3,6 @@ services:
   - type: pserv
     name: flutter-backend-db
     plan: free
-    databases:
-      - name: flutter_db
-        user: flutter_user
 
   # Web Service - Go Backend
   - type: web
